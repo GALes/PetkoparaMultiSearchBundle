@@ -1,5 +1,5 @@
 {
-    "name": "mprod-petkopara/multi-search-bundle",
+    "name": "gales-petkopara/multi-search-bundle",
     "description": "Symfony bundle for Multi Criteria Search for doctrine entities using Form or Service.",
     "keywords": ["multi-search","criteria", "query builder", "symfony3", "doctrine"],
     "type": "symfony-bundle",
