@@ -20,7 +20,7 @@ The searched columns can be specified.
 
 ### Using composer
 
-    composer require petkopara/multi-search-bundle
+    composer require gales-petkopara/multi-search-bundle
 
 Add it to the `AppKernel.php` class:
 
