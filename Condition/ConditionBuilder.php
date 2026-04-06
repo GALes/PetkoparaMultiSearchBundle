@@ -44,17 +44,41 @@ abstract class ConditionBuilder
             $paramPosistion = $i + 1;
             ++$subst;
 
+            // Add FROM first so that leftJoin has a root alias to work with
+            $qbInner->from($this->entityName, $subst);
+
             $whereQuery = $query->expr()->orX();
 
             foreach ($this->searchColumns as $column) {
+                // Soporte for dotted notation (e.g. 'persona.email') to search in related entities
+                if (strpos($column, '.') !== false) {
+                    $parts = explode('.', $column);
+                    $fieldPart = array_pop($parts);
+                    $pathParts = $parts;
+
+                    // Build dynamic JOINs in the subquery with unique aliases to avoid collisions with outer query
+                    $currentAlias = $subst;
+                    foreach ($pathParts as $joinPart) {
+                        $joinElement = $currentAlias . '.' . $joinPart;
+                        // Use subquery-prefixed alias to avoid conflicts with outer query JOINs
+                        $joinAlias = $subst . '_' . $joinPart;
+                        if (!str_contains($qbInner->getDQL(), 'JOIN ' . $joinElement)) {
+                            $qbInner->leftJoin($joinElement, $joinAlias);
+                        }
+                        $currentAlias = $joinAlias;
+                    }
+                    $fullField = $currentAlias . '.' . $fieldPart;
+                } else {
+                    $fullField = $subst . '.' . $column;
+                }
+
                 $whereQuery->add($query->expr()->like(
-                                $subst . '.' . $column, '?' . $paramPosistion
+                    $fullField, '?' . $paramPosistion
                 ));
             }
 
             $subqueryInner = $qbInner
                     ->select($subst . '.' . $this->idName)
-                    ->from($this->entityName, $subst)
                     ->where($whereQuery);
 
             if ($subquery !== null) {
