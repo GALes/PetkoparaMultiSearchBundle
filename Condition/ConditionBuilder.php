@@ -8,6 +8,7 @@ abstract class ConditionBuilder
 {
 
     protected $queryBuilder;
+    protected $entityManager;
     protected $searchColumns = array();
     protected $searchTerm;
     protected $searchComparisonType;
