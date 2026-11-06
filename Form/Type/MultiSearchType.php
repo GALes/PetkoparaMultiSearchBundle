@@ -21,7 +21,7 @@ class MultiSearchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (empty($options['class'])) {
             throw new InvalidConfigurationException('Option "class" must be set.');
@@ -31,7 +31,7 @@ class MultiSearchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
                 ->setDefaults(array(
@@ -54,7 +54,7 @@ class MultiSearchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return SearchType::class;
     }
@@ -62,7 +62,7 @@ class MultiSearchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'petkopara_multisearch';
     }
